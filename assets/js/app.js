@@ -27,8 +27,16 @@ var app = {
   /** Affiche la liste des fichiers disponibles */
   renderFiles: function () {
     $(document).on('keyup', event => {
-      if (event.keyCode == 27) {
-        $('#modalWrap').removeClass('active');
+      switch (event.keyCode) {
+        case 27:
+          $('#modalWrap overlay').trigger('click');
+          break;
+        case 37:
+          $('#modalWrap .move-left').trigger('click');
+          break;
+        case 39:
+          $('#modalWrap .move-right').trigger('click');
+          break;
       }
     })
     this.files.fetch();
