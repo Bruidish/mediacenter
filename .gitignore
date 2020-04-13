@@ -1,4 +1,6 @@
 .vscode
 .DS_Store
-images/*
-videos/*
+/images/*
+!/images/index.php
+/videos/*
+!/videos/index.php
