@@ -1,0 +1,62 @@
+<!--
+ *  @author  Michel Dumont <michel.dumont.io>
+ *  @version 1.0.0 [2020-04-10]
+ *  @package mediaCenter 1.0.0
+-->
+
+<main>
+    <div class="extension-<%=model.extension%>"><%=model.extension%></div>
+
+    <div class="cover" style="background-image: url('<%= model.image %>');"></div>
+    <input class="cover-url" type="text" name="image" value="<%= model.image.match(/http/g) ? model.image.match : '' %>" placeholder="https://..."/>
+    <input class="title grid-2" type="text" name="title" value="<%= model.title%>"/>
+    <input type="text" name="release_year" value="<%= model.release_year%>" placeholder="Année de sortie"/>
+    <input class="grid-3" type="text" name="subtitle" value="<%= model.subtitle%>" placeholder="Sous titre"/>
+    <textarea name="description" placeholder="Description"><%= model.description%></textarea>
+    <input type="text" name="rate" value="<%= model.rate%>" placeholder="note / 5"/>
+
+    <div class="action">
+        <% if (model.extension == 'mp4') { %>
+            <a class="fa fa-play bg-orange" href="<%= model.path %>" target="_blank"></a>
+        <% } else { %>
+            <a class="fa fa-download bg-orange" href="<%=model.path%>"></a>
+        <% } %>
+        <button class="toggle-filedetails fa fa-file-o bg-slategrey" data-iconstart="fa-file-o" data-iconend="fa-times"></button>
+        <a class="fa fa-external-link bg-white" target="_blank" href="https://www.themoviedb.org/search?language=fr-FR&query=<%=model.title%>"></a>
+    </div>
+
+    <button class="move-left fa fa-long-arrow-left"></button>
+    <button class="move-right fa fa-long-arrow-right"></button>
+
+    <aside>
+        <table>
+            <tr>
+                <th><i class="fa fa-file" title="Nom du fichier"></th>
+                <td>
+                    <%= model.filename %>
+                    <% if(model.filename != model.title+' - '+model.release_year) {%>
+                        <br><button class="rename-file">Renommer le fichier</button>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <th><i class="fa fa-pie-chart" title="Espace sur le disque"></i></th>
+                <td><%= model.filesize %></td>
+            </tr>
+            <tr>
+                <th><i class="fa fa-play" title="Type de fichier"></i></th>
+                <td>
+                    Fichier <%= model.extension %>
+                    <% if(model.extension != 'mp4') {%>
+                        <br><button class="encode-file">Convertir en mp4</button>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <th><button class="remove-file"><i class="fa fa-trash"></i></button></th>
+                <td>Supprimer définitivement le fichier</td>
+            </tr>
+        </table>
+    </aside>
+</main>
+<overlay></overlay>

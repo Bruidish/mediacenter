@@ -1,0 +1,8 @@
+{
+    "local": {
+        "path": "videos/"
+    },
+    "external": {
+        "path": "../../../../Volumes/VIDEOS/"
+    }
+}

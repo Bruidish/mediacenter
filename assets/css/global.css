@@ -1,0 +1,305 @@
+/**
+ *  @author  Michel Dumont <michel.dumont.io>
+ *  @version 1.0.0 [2020-04-10]
+ *  @package mediaCenter 1.0.0
+ */
+
+body {
+  color: #fff;
+  background: #222;
+  transition: opacity .3s;
+}
+body.dragOn {
+  opacity: .2;
+}
+
+* {
+  font-family: 'Source Sans Pro','Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 400;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input,
+textarea {
+  outline: none;
+  padding: 10px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.txt-orange {
+  color: orangered!important;
+}
+.txt-darker {
+  color: #666!important;
+}
+.bg-orange {
+  background-color: orangered!important;
+}
+.bg-red {
+  background-color: darkred!important;
+}
+.bg-blue {
+  background-color: darkblue!important;
+}
+.bg-slategrey {
+  background-color: darkslategrey!important;
+}
+.bg-white {
+  background-color: white!important;
+  color: #222!important;
+  border: 1px solid;
+}
+
+
+header {
+  display: flex;
+  width: 100%;
+  padding: 10px 20px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #222;
+}
+header input {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #666;
+  color: #ddd;
+  background: transparent;
+  font-size: 18px;
+  -webkit-appearance: none;
+}
+header input::placeholder {
+  color: #666;
+}
+
+
+footer {
+  z-index: 10;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background: #222;
+  padding: 10px;
+  text-align: right;
+}
+footer a {
+  padding: 0 .5em;
+  color: #999;
+  text-decoration: none;
+}
+footer a i {
+  font-size: .4em;
+  margin-left: .3em;
+}
+
+main {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  width: 100%;
+  padding: 20px;
+  grid-gap: 40px;
+  grid-template-columns: repeat( auto-fit, 216px );
+  grid-auto-rows: minmax(230px, auto);
+}
+main > article {
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 300;
+}
+main > article > div.cover {
+  width: 100%;
+  padding-bottom: 150%;
+  margin-bottom: 10px;
+  background-color: #666;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 1px solid #222;
+  transition: all .3s ease-in-out;
+}
+main > article:hover > div.cover {
+  box-shadow: 0 0 30px 5px #000;
+  border-color: #ddd;
+}
+
+#modalWrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+}
+#modalWrap > div > main {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  width: 800px;
+  max-width: 90%;
+  transform: translate(-50%, calc(-120%));
+  background: #fff;
+  color: #222;
+  padding: 20px;
+  transition: all .2s ease-in-out;
+}
+#modalWrap.active > div > main {
+  transition: all .2s ease-in-out .2s;
+  transform: translate(-50%, 0);
+}
+#modalWrap > div > overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 0;
+  opacity: 0;
+  z-index: 0;
+  background: #000;
+  transition: opacity .3s ease-in-out .2s, height 0s .6s;
+}
+#modalWrap.active > div > overlay {
+  transition: opacity .2s ease-in-out, height 0s;
+  height: 100vh;
+  opacity: .75;
+}
+#modalWrap > div > main {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr) 90px;
+  grid-auto-rows: minmax(40px, auto);
+}
+#modalWrap > div > main input,
+#modalWrap > div > main textarea {
+  font-size: 14px;
+  border: 1px solid #ddd;
+}
+#modalWrap > div > main input:focus,
+#modalWrap > div > main textarea:focus {
+  border: 1px solid #999;
+}
+#modalWrap > div > main button.move-left,
+#modalWrap > div > main button.move-right {
+  position: absolute;
+  bottom: -30px;
+  background: transparent;
+  color: #fff;
+  border: none;
+  right: 0;
+  cursor: pointer;
+}
+#modalWrap > div > main button.move-left {
+  right: 30px
+}
+#modalWrap > div > main .cover {
+  width: 300px;
+  height: 450px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  grid-row: span 7;
+}
+#modalWrap > div > main .cover-url {
+  grid-row: 8 / span 1;
+}
+#modalWrap > div > main .title {
+  font-size: 1.4em;
+}
+#modalWrap > div > main .grid-2 {
+  grid-column: span 2;
+}
+#modalWrap > div > main .grid-3 {
+  grid-column: span 3;
+}
+#modalWrap > div > main textarea {
+  grid-column: span 3;
+  grid-row: span 4;
+}
+#modalWrap > div > main .action {
+  display: flex;
+  flex-flow: row-reverse wrap;
+  grid-column: 3 / span 2;
+  grid-row: 8 / span 1;
+  text-align: right;
+}
+#modalWrap > div > main .action a,
+#modalWrap > div > main .action button {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  line-height: 40px;
+  color: #fff;
+  background: #222;
+  border: 1px solid #222;
+  margin-left: 5px;
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#modalWrap > div > main div[class*='extension-'] {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 2px 8px;
+  color: #ddd;
+  font-size: 12px;
+  font-weight: 700;
+}
+#modalWrap > div > main div.extension-avi {
+  background: darkblue;
+}
+#modalWrap > div > main div.extension-mkv {
+  background: darkorange;
+}
+#modalWrap > div > main div.extension-mp4 {
+  background: darkgreen;
+}
+#modalWrap > div > main aside {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc(100% - 340px);
+  height: calc(100% - 70px);
+  background: darkslategrey;
+  padding: 20px;
+  transform: translate(0, -100%);
+  transition: transform .3s ease-in-out;
+}
+#modalWrap > div.aside-active > main aside {
+  transform: translate(0, 0);
+}
+#modalWrap > div > main aside table {
+  width: 100%;
+}
+#modalWrap > div > main aside table th {
+  width: 50px;
+}
+#modalWrap > div > main aside table th > button {
+  border: none;
+  background: none;
+}
+#modalWrap > div > main aside table th i {
+  display: block;
+  background: #fff;
+  border: transparent;
+  border-radius: 4px;
+  padding: 15px;
+  width: 50px;
+  height: 50px;
+  margin: 6px;
+  font-size: 20px;
+  line-height: 20px;
+}
+#modalWrap > div > main aside table td {
+  padding: 0 0 0 5px;
+  font-size: 16px;
+  color: #fff;
+}

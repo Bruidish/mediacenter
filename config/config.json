@@ -1,0 +1,9 @@
+{
+    "dbHost": "localhost",
+    "dbUser": "root",
+    "dbPassword": "root",
+    "dbName": "mediacenter",
+    "dbPrefix": "mc_",
+    "dbCharset": "utf8",
+    "dbEngine": "InnoDB"
+}

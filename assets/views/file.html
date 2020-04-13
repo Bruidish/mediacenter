@@ -1,0 +1,15 @@
+<!--
+ *  @author  Michel Dumont <michel.dumont.io>
+ *  @version 1.0.0 [2020-04-10]
+ *  @package mediaCenter 1.0.0
+-->
+
+<div class="cover" style="background-image: url('<%= model.image %>');" title="<%=model.description%>"></div>
+<%= model.title %>
+<% if(model.rate) {%>
+    <div class="rate">
+        <% for(let i=0; i<5; i++) {%>
+            <i class="fa fa-star<%= model.rate<=i ? '-o txt-darker' : '' %>"></i>
+        <% } %>
+    </div>
+<% } %>
