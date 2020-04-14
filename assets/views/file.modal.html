@@ -11,9 +11,9 @@
     <input class="cover-url" type="text" name="image" value="<%= model.image.match(/http/g) ? model.image.match : '' %>" placeholder="https://..."/>
     <input class="title grid-2" type="text" name="title" value="<%= model.title%>"/>
     <input type="text" name="release_year" value="<%= model.release_year%>" placeholder="Année de sortie"/>
-    <input class="grid-3" type="text" name="subtitle" value="<%= model.subtitle%>" placeholder="Sous titre"/>
-    <textarea name="description" placeholder="Description"><%= model.description%></textarea>
+    <input class="grid-2" type="text" name="subtitle" value="<%= model.subtitle%>" placeholder="Sous titre"/>
     <input type="text" name="rate" value="<%= model.rate%>" placeholder="note / 5"/>
+    <textarea name="description" placeholder="Description"><%= model.description%></textarea>
 
     <div class="action">
         <% if (model.extension == 'mp4') { %>
