@@ -17,7 +17,8 @@ var SearchView = Backbone.View.extend({
   /** @var object Events de la vue */
   events: {
     'keyup #search': 'filterCollectionByTitle',
-    'change select': 'filterCollectionBySelect'
+    'change select': 'filterCollectionBySelect',
+    'click #toggleFullscreen': 'toggleFullscreen'
   },
 
   /** Rendu de la vue
@@ -104,6 +105,45 @@ var SearchView = Backbone.View.extend({
       app.files.filter((model) => {
         model.set({ 'hidden': typeof model.attributes[index] == 'object' || !model.attributes[index].match(value) || model.attributes.hidden })
       })
+    }
+  },
+
+  /** Check si le contenu est en fullscreen
+   *
+   * @return boolean
+   */
+  isFullscrren: function () {
+    return (null !== (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || null));
+  },
+  /** Active fullscreen
+   * @see https://usefulangle.com/post/12/javascript-going-fullscreen-is-rare
+   *
+   * @param element
+   *
+   * @return void
+   */
+  toggleFullscreen: function (event) {
+    if (this.isFullscrren()) {
+      if (document.exitFullscreen)
+        document.exitFullscreen();
+      else if (document.mozCancelFullScreen)
+        document.mozCancelFullScreen();
+      else if (document.webkitExitFullscreen)
+        document.webkitExitFullscreen();
+      else if (document.msExitFullscreen)
+        document.msExitFullscreen();
+      $(event.currentTarget).removeClass('fa-compress').addClass('fa-expand');
+    } else {
+      let element = $('body').get(0);
+      if (element.requestFullscreen)
+        element.requestFullscreen();
+      else if (element.mozRequestFullScreen)
+        element.mozRequestFullScreen();
+      else if (element.webkitRequestFullscreen)
+        element.webkitRequestFullscreen();
+      else if (element.msRequestFullscreen)
+        element.msRequestFullscreen();
+      $(event.currentTarget).removeClass('fa-expand').addClass('fa-compress');
     }
   }
 });

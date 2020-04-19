@@ -24,7 +24,6 @@ An easy way to display your films collection and populate their informations
 * Drag and drop on window an avi|mkv|mp4 file  
 
 ## Todo
-* [Application en fullscreen](https://usefulangle.com/post/12/javascript-going-fullscreen-is-rare)
 * Optimize mp4 encodding
 * include some cool graphics elements
 * add tags like action, comedy, adventure, triller, series, etc.
