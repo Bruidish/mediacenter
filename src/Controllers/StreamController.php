@@ -68,12 +68,12 @@ class StreamController
      */
     public function mpegEncode()
     {
-        $output        = true;
-        $FileModel     = $this->renameFile($_POST['path']);
+        $output = true;
+        $FileModel = $this->renameFile($_POST['path']);
         $fileExtension = substr($_POST['path'], -3);
         if ($FileModel->id && $FileModel->path) {
-            $fileSize            = filesize($FileModel->path);
-            $encodedFilePath     = str_replace($fileExtension, 'mp4', $FileModel->path);
+            $fileSize = filesize($FileModel->path);
+            $encodedFilePath = str_replace($fileExtension, 'mp4', $FileModel->path);
             $encodingCompression = "-q:a 0 -q:v 0";
 
             if ($fileSize >= 1000000000) {
@@ -98,11 +98,11 @@ class StreamController
      */
     public function renameFile()
     {
-        $filePath  = $_POST['path'];
-        $fileName  = substr(basename($filePath), 0, -4);
-        $fileHash  = FileModel::getHash($fileName);
-        $table     = $this->context->dbPrefix . FileModel::$definition['table'];
-        $idFile    = (new DbController)->getValue("SELECT id FROM {$table} WHERE hash=\"{$fileHash}\"");
+        $filePath = $_POST['path'];
+        $fileName = substr(basename($filePath), 0, -4);
+        $fileHash = FileModel::getHash($fileName);
+        $table = $this->context->dbPrefix . FileModel::$definition['table'];
+        $idFile = (new DbController)->getValue("SELECT id FROM {$table} WHERE hash=\"{$fileHash}\"");
         $FileModel = new FileModel($idFile);
 
         if (!$FileModel->id) {
@@ -119,7 +119,7 @@ class StreamController
         /** Met à jour le hash en base */
         if ($output) {
             $output &= (new DbController)->update(FileModel::$definition['table'], ['hash' => $newHash], "id={$FileModel->id}");
-            $FileModel->path     = $newPath;
+            $FileModel->path = $newPath;
             $FileModel->filename = substr(basename($newPath), 0, -4);
         }
 
@@ -156,17 +156,17 @@ class StreamController
     private function _getFiles($path, &$output)
     {
         foreach (glob("{$path}*") as $entry) {
-            if (is_file($entry) && preg_match('/(\.avi|\.mkv|\.mp4)$/', $entry)) {
-                $fileName               = substr(basename($entry), 0, -4);
-                $fileHash               = FileModel::getHash($fileName);
-                $fileDatas              = FileModel::getByHash($fileHash, $this->context);
-                $fileDatas['hash']      = $fileHash;
-                $fileDatas['path']      = $entry;
-                $fileDatas['filename']  = $fileName;
-                $fileDatas['filesize']  = self::fileSizeConvert(filesize($entry));
+            if (is_file($entry) && preg_match('/(\.avi|\.mkv|\.mp4)$/i', $entry)) {
+                $fileName = substr(basename($entry), 0, -4);
+                $fileHash = FileModel::getHash($fileName);
+                $fileDatas = FileModel::getByHash($fileHash, $this->context);
+                $fileDatas['hash'] = $fileHash;
+                $fileDatas['path'] = $entry;
+                $fileDatas['filename'] = $fileName;
+                $fileDatas['filesize'] = self::fileSizeConvert(filesize($entry));
                 $fileDatas['extension'] = substr($entry, -3);
                 if (!isset($fileDatas['title']) || empty($fileDatas['title'])) {
-                    $cleanTitle         = static::getDataByFilename($fileDatas['filename']);
+                    $cleanTitle = static::getDataByFilename($fileDatas['filename']);
                     $fileDatas['title'] = $cleanTitle[1];
                     if (isset($cleanTitle[2]) && (!isset($fileDatas['release_year']) || empty($fileDatas['release_year']))) {
                         $fileDatas['release_year'] = $cleanTitle[2];
@@ -198,7 +198,7 @@ class StreamController
                 ];
             } else {
                 $output[] = [
-                    'name'     => basename($entry),
+                    'name' => basename($entry),
                     'children' => $this->_getRecursiveFiles("{$entry}/"),
                 ];
             }
@@ -239,7 +239,7 @@ class StreamController
      */
     public static function fileSizeConvert($bytes)
     {
-        $bytes   = floatval($bytes);
+        $bytes = floatval($bytes);
         $arBytes = [
             0 => ["UNIT" => "TB", "VALUE" => pow(1024, 4)],
             1 => ["UNIT" => "GB", "VALUE" => pow(1024, 3)],
