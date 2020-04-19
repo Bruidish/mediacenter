@@ -42,15 +42,15 @@ class ObjectModel
 
     /** @var array */
     public static $definition = [
-        'table'   => '',
+        'table' => '',
         'primary' => '',
-        'fields'  => [],
+        'fields' => [],
     ];
 
     public function __construct($id = null)
     {
         $this->context = new ContextModel;
-        $this->table   = static::$definition['table'];
+        $this->table = static::$definition['table'];
         $this->primary = static::$definition['primary'];
 
         if ($id) {
@@ -77,12 +77,12 @@ class ObjectModel
     public function save()
     {
         $requestData = json_decode(Slim::getInstance()->request()->getBody());
-        $dataToSave  = [];
+        $dataToSave = [];
         foreach (static::$definition['fields'] as $key => $params) {
             if (isset($requestData->$key)) {
                 $dataToSave[$key] = (isset($requestData->$key) ? trim($requestData->$key) : $this->$key);
 
-                if (isset($params['default']) && $params['default'] === 'NULL' && empty($dataToSave[$key])) {
+                if (isset($params['default']) && $params['default'] === 'NULL' && trim($dataToSave[$key]) == '') {
                     $dataToSave[$key] = null;
                 }
             }
@@ -92,8 +92,8 @@ class ObjectModel
             $output = (new DbController)->update($this->table, $dataToSave, "{$this->primary}=\"{$this->id}\"");
         } else {
             $DbController = new DbController;
-            $output       = $DbController->insert($this->table, $dataToSave);
-            $this->id     = $DbController->lastInsertId();
+            $output = $DbController->insert($this->table, $dataToSave);
+            $this->id = $DbController->lastInsertId();
         }
 
         return $output ? new static($this->id) : false;
