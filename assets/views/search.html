@@ -4,4 +4,19 @@
  *  @package mediaCenter 1.0.0
 -->
 
-<input type="search" placeholder="Rechercher"/>
+<input id="search" type="search" placeholder="Rechercher"/>
+<select id="year" data-index="release_year">
+    <% _.each(filterYears, (year) => {%>
+        <option value="<%= year %>"><%= year == 3000 ? 'Années' : year %></option>
+    <% }) %>
+</select>
+<select id="rate" data-index="rate">
+    <option value="">Note</option>
+    <option value="5">5/5</option>
+    <option value="4">4/5</option>
+    <option value="3">3/5</option>
+    <option value="2">2/5</option>
+    <option value="1">1/5</option>
+    <option value="0">0/5</option>
+</select>
+<button id="toggleFullscreen" class="fa fa-expand"></button>

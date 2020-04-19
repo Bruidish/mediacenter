@@ -8,24 +8,30 @@ var app = {
 
   /** initialize l'application*/
   initialize: function () {
-
+    // Collections
     this.files = new FileCollection();
 
+    // Views
     this.filesList = new FileListView();
     this.searchForm = new SearchView();
 
-    this.render();
+    // Events
+    this.events();
+
+    // Rendering
+    this.files.fetch({
+      success: () => this.render()
+    });
   },
 
   /** Affiche les différents contenus */
   render: function () {
-    this.searchForm.render();
-    this.renderFiles();
+    this.renderSearch();
     this.renderUploader()
   },
 
   /** Affiche la liste des fichiers disponibles */
-  renderFiles: function () {
+  events: function () {
     $(document).on('keyup', event => {
       switch (event.keyCode) {
         case 27:
@@ -39,7 +45,11 @@ var app = {
           break;
       }
     })
-    this.files.fetch();
+  },
+
+  /** Affiche le formulaire de recherche et les filtres */
+  renderSearch: function () {
+    this.searchForm.render();
   },
 
   /** Affiche la zone de dépos des fichiers pour l'upload */
