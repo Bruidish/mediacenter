@@ -55,17 +55,20 @@ button {
 }
 
 
-header {
+body > header {
   display: flex;
-  width: 100%;
+  width: calc(100% + 20px);
+  margin-left: -10px;
   padding: 10px 20px 30px;
   position: sticky;
   top: 0;
   z-index: 10;
   background: #222;
 }
-header input {
+body > header select,
+body > header input {
   flex: 1;
+  margin: 0 10px;
   border: none;
   border-bottom: 1px solid #666;
   color: #ddd;
@@ -73,8 +76,15 @@ header input {
   font-size: 18px;
   -webkit-appearance: none;
 }
-header input::placeholder {
+body > header input::placeholder {
   color: #666;
+}
+body > header select:focus,
+body > header input:focus {
+  outline: none;
+}
+body > header input#search {
+  flex: 5
 }
 
 

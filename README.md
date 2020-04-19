@@ -28,8 +28,7 @@ An easy way to display your films collection and populate their informations
 * Optimize mp4 encodding
 * include some cool graphics elements
 * add tags like action, comedy, adventure, triller, series, etc.
-* sort by stars
 * add comedian informations and filters
-* research by year
 * add featured like the fives last uploaded before to display the rest of the collection
 * add private comment
+* list files data despite they was deleted from disk
