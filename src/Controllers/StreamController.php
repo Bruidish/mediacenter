@@ -101,9 +101,8 @@ class StreamController
         $filePath = $_POST['path'];
         $fileName = substr(basename($filePath), 0, -4);
         $fileHash = FileModel::getHash($fileName);
-        $table = $this->context->dbPrefix . FileModel::$definition['table'];
-        $idFile = (new DbController)->getValue("SELECT id FROM {$table} WHERE hash=\"{$fileHash}\"");
-        $FileModel = new FileModel($idFile);
+        $fileId = FileModel::getIdByHash($fileHash, $this->context);
+        $FileModel = new FileModel($fileId);
 
         if (!$FileModel->id) {
             die(false);
@@ -163,6 +162,7 @@ class StreamController
                 $fileDatas['hash'] = $fileHash;
                 $fileDatas['path'] = $entry;
                 $fileDatas['filename'] = $fileName;
+                $fileDatas['filenameFormatted'] = FileModel::getFileName($fileDatas);
                 $fileDatas['filesize'] = self::fileSizeConvert(filesize($entry));
                 $fileDatas['extension'] = substr($entry, -3);
                 if (!isset($fileDatas['title']) || empty($fileDatas['title'])) {
@@ -220,13 +220,13 @@ class StreamController
 
         if (!$output) {
             $output = [
-                0 => $title,
-                1 => $title,
+                0 => trim($title),
+                1 => trim($title),
                 2 => '',
             ];
         }
 
-        $output[1] = str_replace(['.', '_'], ' ', $output[1]);
+        $output[1] = trim(str_replace(['.', '_'], ' ', $output[1]));
 
         return $output;
     }

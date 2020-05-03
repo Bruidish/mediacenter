@@ -38,10 +38,14 @@ var app = {
           $('#modalWrap overlay').trigger('click');
           break;
         case 37:
-          $('#modalWrap .move-left').trigger('click');
+          if (event.target.nodeName != 'INPUT' && event.target.nodeName != 'TEXTAREA') {
+            $('#modalWrap .move-left').trigger('click');
+          }
           break;
         case 39:
-          $('#modalWrap .move-right').trigger('click');
+          if (event.target.nodeName != 'INPUT' && event.target.nodeName != 'TEXTAREA') {
+            $('#modalWrap .move-right').trigger('click');
+          }
           break;
       }
     })

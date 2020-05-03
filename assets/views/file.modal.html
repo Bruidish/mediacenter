@@ -22,7 +22,7 @@
             <a class="fa fa-download bg-orange" href="<%=model.path%>"></a>
         <% } %>
         <button class="toggle-filedetails fa fa-file-o bg-slategrey" data-iconstart="fa-file-o" data-iconend="fa-times"></button>
-        <a class="fa fa-external-link bg-white" target="_blank" href="https://www.themoviedb.org/search?language=fr-FR&query=<%=model.title%>"></a>
+        <a class="fa fa-external-link bg-white" target="_blank" href="https://www.themoviedb.org/search/movie?query=<%=model.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "")%><%=model.release_year ? '&year='+model.release_year : ''%>&language=fr-FR"></a>
     </div>
 
     <button class="move-left fa fa-long-arrow-left"></button>
@@ -34,7 +34,7 @@
                 <th><i class="fa fa-file" title="Nom du fichier"></th>
                 <td>
                     <%= model.filename %>
-                    <% if(model.filename != model.title+' - '+model.release_year) {%>
+                    <% if(model.filename != model.filenameFormatted) {%>
                         <br><button class="rename-file">Renommer le fichier</button>
                     <% } %>
                 </td>
