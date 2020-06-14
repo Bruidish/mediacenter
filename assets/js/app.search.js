@@ -103,7 +103,7 @@ var SearchView = Backbone.View.extend({
   filterModel: function (value, index) {
     if (value) {
       app.files.filter((model) => {
-        model.set({ 'hidden': typeof model.attributes[index] == 'object' || !model.attributes[index].match(value) || model.attributes.hidden })
+        model.set({ 'hidden': (value == 'null' && typeof model.attributes[index] != 'object') || (value != 'null' && (typeof model.attributes[index] == 'object' || !model.attributes[index].match(value) || model.attributes.hidden)) })
       })
     }
   },
