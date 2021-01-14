@@ -16,12 +16,16 @@
     <textarea name="description" placeholder="Description"><%= model.description%></textarea>
 
     <div class="action">
-        <% if (model.extension == 'mp4') { %>
-            <a class="fa fa-play bg-orange" href="<%= model.path %>" target="_blank"></a>
+        <% if (model.extension) { %>
+            <% if (model.extension == 'mp4') { %>
+                <a class="fa fa-play bg-orange" href="<%= model.path %>" target="_blank"></a>
+            <% } else { %>
+                <a class="fa fa-download bg-orange" href="<%=model.path%>"></a>
+            <% } %>
+            <button class="toggle-filedetails fa fa-file-o bg-slategrey" data-iconstart="fa-file-o" data-iconend="fa-times"></button>
         <% } else { %>
-            <a class="fa fa-download bg-orange" href="<%=model.path%>"></a>
+            <button class="toggle-filedetails fa fa-archive" data-iconstart="fa-archive" data-iconend="fa-times"></button>
         <% } %>
-        <button class="toggle-filedetails fa fa-file-o bg-slategrey" data-iconstart="fa-file-o" data-iconend="fa-times"></button>
         <a class="fa fa-external-link bg-white" target="_blank" href="https://www.themoviedb.org/search/movie?query=<%=model.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "")%><%=model.release_year ? '&year='+model.release_year : ''%>&language=fr-FR"></a>
     </div>
 
@@ -30,32 +34,39 @@
 
     <aside>
         <table>
-            <tr>
-                <th><i class="fa fa-file" title="Nom du fichier"></th>
-                <td>
-                    <%= model.filename %>
-                    <% if(model.filename != model.filenameFormatted) {%>
-                        <br><button class="rename-file">Renommer le fichier</button>
-                    <% } %>
-                </td>
-            </tr>
-            <tr>
-                <th><i class="fa fa-pie-chart" title="Espace sur le disque"></i></th>
-                <td><%= model.filesize %></td>
-            </tr>
-            <tr>
-                <th><i class="fa fa-play" title="Type de fichier"></i></th>
-                <td>
-                    Fichier <%= model.extension %>
-                    <% if(model.extension != 'mp4') {%>
-                        <br><button class="encode-file">Convertir en mp4</button>
-                    <% } %>
-                </td>
-            </tr>
-            <tr>
-                <th><button class="remove-file"><i class="fa fa-trash"></i></button></th>
-                <td>Supprimer définitivement le fichier</td>
-            </tr>
+            <% if (model.extension) { %>
+                <tr>
+                    <th><i class="fa fa-file" title="Nom du fichier"></th>
+                    <td>
+                        <%= model.filename %>
+                        <% if(model.filename != model.filenameFormatted) {%>
+                            <br><button class="rename-file">Renommer le fichier</button>
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <th><i class="fa fa-pie-chart" title="Espace sur le disque"></i></th>
+                    <td><%= model.filesize %></td>
+                </tr>
+                <tr>
+                    <th><i class="fa fa-play" title="Type de fichier"></i></th>
+                    <td>
+                        Fichier <%= model.extension %>
+                        <% if(model.extension != 'mp4') {%>
+                            <br><button class="encode-file">Convertir en mp4</button>
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <th><button class="remove-file"><i class="fa fa-trash"></i></button></th>
+                    <td>Supprimer définitivement le fichier</td>
+                </tr>
+                <% } else { %>
+                    <tr>
+                        <th><button class="remove-archive"><i class="fa fa-trash"></i></button></th>
+                        <td>Supprimer définitivement les données</td>
+                    </tr>
+                <% }%>
         </table>
     </aside>
 </main>

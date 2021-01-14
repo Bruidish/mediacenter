@@ -82,7 +82,7 @@ class DbController
     public function insert($table, $values)
     {
         if ($values) {
-            $table     = preg_match("/^{$this->context->dbPrefix}/", $table) ? $table : $this->context->dbPrefix . $table;
+            $table = preg_match("/^{$this->context->dbPrefix}/", $table) ? $table : $this->context->dbPrefix . $table;
             $fieldsSql = '';
             $valuesSql = [];
 
@@ -107,7 +107,7 @@ class DbController
     public function update($table, $values, $where)
     {
         if ($values) {
-            $table     = preg_match("/^{$this->context->dbPrefix}/", $table) ? $table : $this->context->dbPrefix . $table;
+            $table = preg_match("/^{$this->context->dbPrefix}/", $table) ? $table : $this->context->dbPrefix . $table;
             $fieldsSql = '';
             $valuesSql = [];
 
@@ -120,6 +120,19 @@ class DbController
         }
 
         return false;
+    }
+
+    /** Supprime les datas en base
+     * @param string
+     * @param string
+     *
+     * @return bool
+     */
+    public function delete($table, $where = null)
+    {
+        $table = preg_match("/^{$this->context->dbPrefix}/", $table) ? $table : $this->context->dbPrefix . $table;
+        $where = $where ? " WHERE {$where}" : '';
+        return (bool) ($this->db->prepare("DELETE FROM `{$table}`{$where}"))->execute();
     }
 
     /** Retourne l'id créer par la dernier inert commande

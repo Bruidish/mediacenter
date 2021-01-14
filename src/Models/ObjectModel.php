@@ -99,6 +99,19 @@ class ObjectModel
         return $output ? new static($this->id) : false;
     }
 
+    /** supprime les données d'un objet
+     *
+     * @return boolean
+     */
+    public function delete()
+    {
+        if ($this->id) {
+            return (new DbController)->delete($this->table, "{$this->primary}=\"{$this->id}\"");
+        } else {
+            return false;
+        }
+    }
+
     /** Installe l'objet
      *
      * @return bool

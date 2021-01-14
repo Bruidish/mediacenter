@@ -22,7 +22,7 @@ class StreamController
         $this->streams = json_decode(file_get_contents(realpath(__DIR__ . '/../../config/streams.json')));
     }
 
-    /** Exécute une fonction de l'objet et retourne son résultat en JSOn
+    /** Exécute une fonction de l'objet et retourne son résultat en JSON
      *
      * @param string
      *
@@ -56,6 +56,17 @@ class StreamController
     public function deleteFile()
     {
         return unlink($_POST['path']);
+    }
+
+    /** Supprime un FileModel
+     *
+     * @var int $_POST['id']
+     *
+     * @return bool
+     */
+    public function deleteArchive()
+    {
+        return (new FileModel((int) $_POST['id']))->delete();
     }
 
     /** Encode un fichier au format mp4
@@ -142,6 +153,26 @@ class StreamController
             $this->_getFiles($stream->path, $output);
         }
 
+        $this->_getArchives($output);
+
+        return array_values($output);
+    }
+
+    /** Retourne les données de fichiers qui n'existent plus mais qui sont enregistrés en base
+     *
+     * @param array collection
+     *
+     * @return array
+     */
+    private function _getArchives(&$output)
+    {
+        $existingCollection = array_keys($output);
+        $existingCollectionString = count($existingCollection) ? '"' . implode('","', $existingCollection) . '"' : '';
+        $table = $this->context->dbPrefix . FileModel::$definition['table'];
+        $archives = (new DbController)->getRows("SELECT * FROM {$table} WHERE hash NOT IN ({$existingCollectionString})");
+
+        $output = array_merge($output, $archives);
+
         return $output;
     }
 
@@ -155,7 +186,7 @@ class StreamController
     private function _getFiles($path, &$output)
     {
         foreach (glob("{$path}*") as $entry) {
-            if (is_file($entry) && preg_match('/(\.avi|\.mkv|\.mp4)$/i', $entry)) {
+            if (is_file($entry) && preg_match('/(\.avi|\.mkv|\.mp4|\.flv)$/i', $entry)) {
                 $fileName = substr(basename($entry), 0, -4);
                 $fileHash = FileModel::getHash($fileName);
                 $fileDatas = FileModel::getByHash($fileHash, $this->context);
@@ -173,7 +204,7 @@ class StreamController
                     }
 
                 }
-                $output[] = $fileDatas;
+                $output[$fileHash] = $fileDatas;
             } else if (is_dir($entry)) {
                 $this->_getFiles("{$entry}/", $output);
             }

@@ -62,5 +62,13 @@ $_app->post("/file/encode", function () {(new Mdg\Controllers\StreamController)-
  */
 $_app->map("/file(/:id)", function ($id = null) {die(json_encode((new Mdg\Models\FileModel($id))->save()));})->via('POST', 'PUT');
 
+/** JSON : Supprime un fichier sur le serveur
+ *
+ * @var string $_POST['path']
+ *
+ * @return boolean
+ */
+$_app->post("/archive/delete", function () {(new Mdg\Controllers\StreamController)->outputJson('deleteArchive');});
+
 /** Exécute l'application */
 $_app->run();

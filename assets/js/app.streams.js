@@ -92,6 +92,7 @@ var FileModalView = Backbone.View.extend({
     'click .rename-file': 'renameFile',
     'click .encode-file': 'encodeFile',
     'click .remove-file': 'removeFile',
+    'click .remove-archive': 'removeArchive',
     'click .move-left': 'previousModel',
     'click .move-right': 'nextModel',
   },
@@ -140,7 +141,9 @@ var FileModalView = Backbone.View.extend({
     }
   },
 
-  /** Supprime un fichier vidéo mais conserve en base les données enregistrées pour ce titre */
+  /** Supprime un fichier vidéo mais conserve en base les données enregistrées pour ce titre
+   *  @todo lorsque l'on supprime un fichier, il faut mettre à jour la vue sans  la retirer de la collection
+  */
   removeFile: function () {
     if (confirm(`Souhaitez vous supprimer définitivement le fichier ${this.model.attributes.filename} ?`)) {
       $.ajax({
@@ -148,6 +151,22 @@ var FileModalView = Backbone.View.extend({
         type: 'POST',
         data: {
           path: this.model.attributes.path
+        },
+        success: repsonse => {
+          app.files.remove(this.model)
+        }
+      })
+    }
+  },
+
+  /** Supprime les données enregistrées en base */
+  removeArchive: function () {
+    if (confirm(`Souhaitez vous supprimer définitivement toutes les données de "${this.model.attributes.title}" ?`)) {
+      $.ajax({
+        url: `/archive/delete`,
+        type: 'POST',
+        data: {
+          id: this.model.id
         },
         success: repsonse => {
           app.files.remove(this.model)

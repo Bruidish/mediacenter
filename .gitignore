@@ -1,5 +1,6 @@
 .vscode
 .DS_Store
+*.sql
 /images/*
 !/images/index.php
 /videos/*
