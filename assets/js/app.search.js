@@ -91,6 +91,7 @@ var SearchView = Backbone.View.extend({
   filterCollection: function () {
     app.files.map((model) => model.set({ 'hidden': false }))
     _.map(this.filtersActive, (value, index) => this.filterModel(value, index));
+    app.files.trigger('reset');
   },
 
   /** Filtre un model
@@ -101,9 +102,9 @@ var SearchView = Backbone.View.extend({
    * @return void
    */
   filterModel: function (value, index) {
-    if (value) {
-      app.files.filter((model) => {
-        model.set({ 'hidden': (value == 'null' && typeof model.attributes[index] != 'object') || (value != 'null' && (typeof model.attributes[index] == 'object' || !model.attributes[index].match(value) || model.attributes.hidden)) })
+    if (value !== false) {
+      app.files.filter(model => {
+        model.set({ 'hidden': (typeof model.attributes[index] == 'undefined') || (value == 'null' && typeof model.attributes[index] != 'object') || (value != 'null' && (typeof model.attributes[index] == 'object' || !model.attributes[index].match(value) || model.attributes.hidden)) })
       })
     }
   },

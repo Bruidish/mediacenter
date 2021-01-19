@@ -27,7 +27,7 @@ var FileListView = Backbone.View.extend({
   el: 'body > main',
 
   initialize: function () {
-    app.files.bind("change reset add remove", () => this.render());
+    app.files.bind("reset add remove", () => this.render());
   },
 
   render: function () {
@@ -47,6 +47,10 @@ var FileListView = Backbone.View.extend({
 /** View => affiche un fichier dans le main */
 var FileView = Backbone.View.extend({
   tagName: 'article',
+
+  initialize: function () {
+    this.model.bind("sync", () => this.render());
+  },
 
   render: function () {
     this.$el
@@ -175,25 +179,33 @@ var FileModalView = Backbone.View.extend({
     }
   },
 
-  /** Recharge la modal avec le FileModel précédent
-   * @todo se base sur toute la collection au lieu de tenir compte de la collection visible
-   */
+  /** Recharge la modal avec le FileModel précédent */
   previousModel: function () {
-    let index = app.files.indexOf(this.model) - 1;
-    if (index < 0) {
-      index = app.files.length - 1;
+    let index = app.files.indexOf(this.model);
+    while (true != false) {
+      index--;
+      if (index < 0) {
+        index = app.files.length - 1;
+      }
+
+      if (app.files.at(index).get('hidden') !== true) {
+        return $('#modalWrap').html(new FileModalView({ model: app.files.at(index) }).render().el);
+      }
     }
-    $('#modalWrap').html(new FileModalView({ model: app.files.at(index) }).render().el);
   },
 
-  /** Recharge la modal avec le FileModel suivant
-   * @todo se base sur toute la collection au lieu de tenir compte de la collection visible
-   */
+  /** Recharge la modal avec le FileModel suivant */
   nextModel: function () {
-    let index = app.files.indexOf(this.model) + 1;
-    if (index == app.files.length) {
-      index = 0;
+    let index = app.files.indexOf(this.model);
+    while (true != false) {
+      index++;
+      if (index == app.files.length) {
+        index = 0;
+      }
+
+      if (app.files.at(index).get('hidden') !== true) {
+        return $('#modalWrap').html(new FileModalView({ model: app.files.at(index) }).render().el);
+      }
     }
-    $('#modalWrap').html(new FileModalView({ model: app.files.at(index) }).render().el);
   }
 });
