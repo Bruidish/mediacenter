@@ -8,6 +8,7 @@
 var FileModel = Backbone.Model.extend({
   urlRoot: `/file`,
   defaults: {
+    title: "",
     image: ""
   }
 });
@@ -101,8 +102,16 @@ var FileModalView = Backbone.View.extend({
     'click .move-right': 'nextModel',
   },
 
-  /** Ferme la modal */
+  /** Ferme la modal
+   * If modal have been opened with a new model
+   * And is closed without saving data
+   * The new model is removed from main collection
+   */
   closeModal: function () {
+    if (typeof this.model.id == 'undefined' && this.model.attributes.title == '') {
+      app.files.remove(this.model)
+    }
+
     this.$el.parent().removeClass('active')
   },
 
@@ -141,7 +150,7 @@ var FileModalView = Backbone.View.extend({
   encodeFile: function () {
     if (confirm(`Renommer et encoder définitivement le fichier au format mp4 ? (béta)`)) {
       $.post(`/file/encode`, { path: this.model.attributes.path })
-        .then(response => this.model.trigger('change'));
+        .then(() => this.model.trigger('change'));
     }
   },
 
@@ -156,8 +165,8 @@ var FileModalView = Backbone.View.extend({
         data: {
           path: this.model.attributes.path
         },
-        success: repsonse => {
-          app.files.remove(this.model)
+        success: () => {
+          this.model.set({ extension: null }).save();
         }
       })
     }
@@ -172,7 +181,7 @@ var FileModalView = Backbone.View.extend({
         data: {
           id: this.model.id
         },
-        success: repsonse => {
+        success: () => {
           app.files.remove(this.model)
         }
       })

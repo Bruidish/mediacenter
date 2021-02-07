@@ -49,20 +49,29 @@ class FileModel extends ObjectModel
 
     public function save()
     {
+        /** Enregistrement de l'objet */
         $output = parent::save();
 
-        /** Enregistrement de l'image */
-        if ($output !== false && preg_match('/^http/', $output->image)) {
-            try {
-                $data = file_get_contents($output->image);
-                if (!is_dir(__DIR__ . "/../../images/{$output->hash}")) {
-                    mkdir(__DIR__ . "/../../images/{$output->hash}");
-                }
-                if (file_put_contents(__DIR__ . "/../../images/{$output->hash}/image.jpg", $data)) {
-                    $output->image = "images/{$output->hash}/image.jpg";
-                    (new DbController)->update($this->table, ['image' => $output->image], "{$this->primary}=\"{$this->id}\"");
-                }
-            } catch (\Exception $e) {}
+        if ($output !== false) {
+            /** Force un hash dans le cas où l'objet n'est pas créait à partir d'un fichier */
+            if ($output->hash == '' && $output->title != '' && $output->release_year != '') {
+                $output->hash = static::getHash(static::getFileName($output));
+                (new DbController)->update($this->table, ['hash' => $output->hash], "{$this->primary}=\"{$this->id}\"");
+            }
+
+            /** Enregistrement de l'image */
+            if (preg_match('/^http/', $output->image) && $output->hash != '') {
+                try {
+                    $data = file_get_contents($output->image);
+                    if (!is_dir(__DIR__ . "/../../images/{$output->hash}")) {
+                        mkdir(__DIR__ . "/../../images/{$output->hash}");
+                    }
+                    if (file_put_contents(__DIR__ . "/../../images/{$output->hash}/image.jpg", $data)) {
+                        $output->image = "images/{$output->hash}/image.jpg";
+                        (new DbController)->update($this->table, ['image' => $output->image], "{$this->primary}=\"{$this->id}\"");
+                    }
+                } catch (\Exception $e) {}
+            }
         }
 
         /** Nom de fichier formaté  */
@@ -84,7 +93,7 @@ class FileModel extends ObjectModel
         return (new DbController)->getRow("SELECT * FROM {$table} WHERE hash=\"{$fileHash}\"");
     }
 
-    /** Retourne l'id' sur un fichier à partir d'un hash du nom du fichier
+    /** Retourne l'id sur un fichier à partir d'un hash du nom du fichier
      *
      * @param string
      * @param object
@@ -126,7 +135,7 @@ class FileModel extends ObjectModel
         return md5(strtolower($fileName));
     }
 
-    /** retourne le nom d'un fichier après l'avoir nettoyé de tout ce qui peut oser des soucis
+    /** retourne le nom d'un fichier après l'avoir nettoyé de tout ce qui peut poser des soucis
      *
      * @param string
      *

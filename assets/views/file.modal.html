@@ -8,7 +8,9 @@
     <div class="extension-<%=model.extension%>"><%=model.extension%></div>
 
     <div class="cover" style="background-image: url('<%= model.image %>');"></div>
-    <input class="cover-url" type="text" name="image" value="<%= model.image.match(/http/g) ? model.image.match : '' %>" placeholder="https://..."/>
+    <% if(model.extension || (model.title && model.release_year)) {%>
+        <input class="cover-url" type="text" name="image" value="<%= model.image.match(/http/g) ? model.image.match : '' %>" placeholder="https://..."/>
+    <% } %>
     <input class="title grid-2" type="text" name="title" value="<%= model.title%>"/>
     <input type="text" name="release_year" value="<%= model.release_year%>" placeholder="Année de sortie"/>
     <input class="grid-2" type="text" name="subtitle" value="<%= model.subtitle%>" placeholder="Sous titre"/>
@@ -40,7 +42,7 @@
                     <td>
                         <%= model.filename %>
                         <% if(model.filename != model.filenameFormatted) {%>
-                            <br><button class="rename-file">Renommer le fichier</button>
+                            <br><button class="rename-file" title="Remplacer par <%= model.filenameFormatted %>">Renommer le fichier</button>
                         <% } %>
                     </td>
                 </tr>

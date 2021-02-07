@@ -132,14 +132,15 @@ main {
   width: 100%;
   padding: 20px;
   grid-gap: 40px;
-  grid-template-columns: repeat( auto-fit, 216px );
-  grid-auto-rows: minmax(230px, auto);
+  grid-template-columns: repeat( auto-fit, minmax(190px, 1fr) );
+  grid-auto-rows: minmax(200px, auto);
 }
 main > article {
   position: relative;
   cursor: pointer;
   text-align: center;
   font-weight: 300;
+  max-width: 220px;
 }
 main > article > div.cover {
   width: 100%;
@@ -206,7 +207,12 @@ main > article:hover > div.cover {
 #modalWrap > div > main input,
 #modalWrap > div > main textarea {
   font-size: 14px;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
+  transition: all .3s ease-in-out;
+}
+#modalWrap > div > main input::placeholder,
+#modalWrap > div > main textarea::placeholder {
+  color: #ccc;
 }
 #modalWrap > div > main input:focus,
 #modalWrap > div > main textarea:focus {

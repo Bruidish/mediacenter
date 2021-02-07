@@ -18,7 +18,8 @@ var SearchView = Backbone.View.extend({
   events: {
     'keyup #search': 'filterCollectionByTitle',
     'change select': 'filterCollectionBySelect',
-    'click #toggleFullscreen': 'toggleFullscreen'
+    'click #toggleFullscreen': 'toggleFullscreen',
+    'click #addNewFile': 'openNewFileView'
   },
 
   /** Rendu de la vue
@@ -35,6 +36,19 @@ var SearchView = Backbone.View.extend({
       .find('input')
       .select()
     return this;
+  },
+
+  /** Open an empty view of file
+   *
+   * @return void
+   */
+  openNewFileView: function () {
+    var model = app.files.add(new FileModel);
+    $('#modalWrap')
+      .removeClass('active')
+      .html(new FileModalView({ model: model }).render().el)
+      .delay(100)
+      .addClass('active');
   },
 
   /** Renseigne le filtre année à partir des années disponibles dans la collection

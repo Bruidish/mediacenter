@@ -25,9 +25,15 @@ An easy way to display your films collection and populate their informations
 
 ## Todo
 * Optimize mp4 encodding
-* include some cool graphics elements
 * add tags like action, comedy, adventure, triller, series, etc.
 * add comedian informations and filters
-* add featured like the fives last uploaded before to display the rest of the collection
+* add movie during
 * add private comment
-* list files data despite they was deleted from disk
+* chunk large upload  
+@see https://gist.github.com/shiawuen/1534477   
+at time to upload large file we ahve to edit php.ini with something like :
+```bash
+upload_max_filesize = 8000M
+post_max_size = 8000M
+```
+
