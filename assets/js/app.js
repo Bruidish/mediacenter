@@ -66,19 +66,15 @@ var app = {
   readFileDroped: function (event) {
     event.preventDefault();
 
-    let files = event.originalEvent.dataTransfer.files;
+    let formData = new FormData();
+    formData.append('file', event.originalEvent.dataTransfer.files[0]);
 
-    for (var i = 0; i < files.length; i++) {
-      let form = new FormData();
-      form.append('file', files[i]);
-
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', `/file/upload`);
-      xhr.onload = (event) => {
-        $('body').removeClass('dragOn');
-        app.files.fetch()
-      };
-      xhr.send(form);
-    }
+    fetch(`/file/upload`, {
+      method: 'POST',
+      body: formData,
+    }).then((response) => {
+      $('body').removeClass('dragOn');
+      app.files.fetch()
+    })
   }
 }

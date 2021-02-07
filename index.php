@@ -48,7 +48,7 @@ require 'src/router.php';
     <main></main>
     <footer>
         <!-- @TODO intégrer au fichier de configuration -->
-        <a href="https://wwv.zone-annuaire.com" target="_blank">Zone annuaires <i class="fa fa-external-link"></i></a> -
+        <a href="https://www.zone-telechargement.pro/" target="_blank">Zone annuaires <i class="fa fa-external-link"></i></a> -
         <a href="https://www.themoviedb.org?language=fr-FR" target="_blank">The movie DB <i class="fa fa-external-link"></i></a>
     </footer>
     <div id="modalWrap"></div>
