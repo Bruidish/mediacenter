@@ -113,6 +113,7 @@ var FileModalView = Backbone.View.extend({
     }
 
     this.$el.parent().removeClass('active')
+    this.model.trigger('modal:close')
   },
 
   /** Enregistre les nouvelles données d'un FileModel */

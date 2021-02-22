@@ -22,6 +22,16 @@ var SearchView = Backbone.View.extend({
     'click #addNewFile': 'openNewFileView'
   },
 
+  /**
+   * Add listener about files for this' events
+   *
+   * @return {void}
+   */
+  initialize: function () {
+    app.files.bind("filter:all", () => this.filterCollectionByAll());
+    app.files.bind("modal:close", () => this.$el.find('input#search').select())
+  },
+
   /** Rendu de la vue
    *
    * @return object
@@ -33,7 +43,7 @@ var SearchView = Backbone.View.extend({
       .html(Tpl.display('assets/views/', 'search', {
         filterYears: this.filterYears
       }))
-      .find('input')
+      .find('input#search')
       .select()
     return this;
   },
@@ -66,6 +76,26 @@ var SearchView = Backbone.View.extend({
     this.filterYears.sort((a, b) => b - a);
   },
 
+  /**
+   * Filter collection from all filters availables
+   *
+   * @return {void}
+   */
+  filterCollectionByAll() {
+    this.$el.find('input, select').each((index, el) => {
+      switch (el.nodeName) {
+        case 'INPUT':
+          this.filtersActive.title = (el.value === '') ? false : new RegExp(el.value, "gi");
+          break;
+        case 'SELECT':
+          this.filtersActive[el.dataset.index] = (el.value === '' || el.value === '3000') ? false : el.value, "gi";
+          break;
+      }
+    })
+
+    this.filterCollection();
+  },
+
   /** Filtre à partir des menus
    *
    * @param event
@@ -89,7 +119,7 @@ var SearchView = Backbone.View.extend({
    * @return void
    */
   filterCollectionByTitle: function (event) {
-    if (event.keyCode == 27) {
+    if (event.keyCode == 27 || event.target.value === '') {
       this.filtersActive.title = false
     } else {
       this.filtersActive.title = new RegExp(event.target.value, "gi")
@@ -118,7 +148,13 @@ var SearchView = Backbone.View.extend({
   filterModel: function (value, index) {
     if (value !== false) {
       app.files.filter(model => {
-        model.set({ 'hidden': (typeof model.attributes[index] == 'undefined') || (value == 'null' && typeof model.attributes[index] != 'object') || (value != 'null' && (typeof model.attributes[index] == 'object' || !model.attributes[index].match(value) || model.attributes.hidden)) })
+        switch (index) {
+          case 'title':
+            model.set({ 'hidden': !model.attributes['title'].match(value) && !model.attributes['subtitle'].match(value) })
+            break;
+          default:
+            model.set({ 'hidden': (typeof model.attributes[index] == 'undefined') || (value == 'null' && typeof model.attributes[index] != 'object') || (value != 'null' && (typeof model.attributes[index] == 'object' || !model.attributes[index].match(value) || model.attributes.hidden)) })
+        }
       })
     }
   },

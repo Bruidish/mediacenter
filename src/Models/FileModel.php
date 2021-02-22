@@ -43,7 +43,7 @@ class FileModel extends ObjectModel
             'description' => ['type' => self::TYPE_HTML],
             'image' => ['type' => self::TYPE_SQL],
             'release_year' => ['type' => self::TYPE_STRING],
-            'rate' => ['type' => self::TYPE_FLOAT, 'default' => 'NULL'],
+            'rate' => ['type' => self::TYPE_FLOAT, 'default' => '6'],
         ],
     ];
 

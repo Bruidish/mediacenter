@@ -20,29 +20,32 @@ var app = {
 
     // Rendering
     this.files.fetch({
+      silent: true,
       success: () => this.render()
     });
   },
 
   /** Affiche les différents contenus */
   render: function () {
-    this.renderSearch();
+    this.renderSearch()
     this.renderUploader()
+    this.files.trigger('filter:all')
   },
 
   /** Affiche la liste des fichiers disponibles */
   events: function () {
     $(document).on('keyup', event => {
       switch (event.keyCode) {
-        case 27:
+        case 27: // escape
           $('#modalWrap overlay').trigger('click');
+          $('#search').val('').trigger('keyup');
           break;
-        case 37:
+        case 37: // left arrow
           if (event.target.nodeName != 'INPUT' && event.target.nodeName != 'TEXTAREA') {
             $('#modalWrap .move-left').trigger('click');
           }
           break;
-        case 39:
+        case 39: // right arrow
           if (event.target.nodeName != 'INPUT' && event.target.nodeName != 'TEXTAREA') {
             $('#modalWrap .move-right').trigger('click');
           }

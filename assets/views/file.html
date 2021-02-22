@@ -6,7 +6,7 @@
 
 <div class="cover" style="background-image: url('<%= model.image %>');"></div>
 <%= model.title %>
-<% if(model.rate) {%>
+<% if(model.rate<6) {%>
     <div class="rate">
         <% for(let i=0; i<5; i++) {%>
             <i class="fa fa-star<%= model.rate<=i ? '-o txt-darker' : '' %>"></i>
