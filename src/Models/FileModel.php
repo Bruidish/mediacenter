@@ -148,7 +148,7 @@ class FileModel extends ObjectModel
         // Sanitize
         $fileName = strip_tags($fileName);
         $fileName = preg_replace('/[\r\n\t ]+/', ' ', $fileName);
-        $fileName = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', ' ', $fileName);
+        $fileName = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', '', $fileName);
         $fileName = preg_replace("/[^a-zA-Z0-9\- ]/", "", $fileName);
         return trim($fileName);
     }

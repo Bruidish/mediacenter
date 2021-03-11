@@ -105,7 +105,7 @@ class StreamController
      *
      * @var string $_POST['path']
      *
-     * @return boolean
+     * @return object
      */
     public function renameFile()
     {
