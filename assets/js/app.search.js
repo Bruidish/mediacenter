@@ -150,7 +150,7 @@ var SearchView = Backbone.View.extend({
       app.files.filter(model => {
         switch (index) {
           case 'title':
-            model.set({ 'hidden': !model.attributes['title'].match(value) && !model.attributes['subtitle'].match(value) })
+            model.set({ 'hidden': (!!!model.attributes['title'] || !model.attributes['title'].match(value)) && (!!!model.attributes['subtitle'] || !model.attributes['subtitle'].match(value)) })
             break;
           default:
             model.set({ 'hidden': (typeof model.attributes[index] == 'undefined') || (value == 'null' && typeof model.attributes[index] != 'object') || (value != 'null' && (typeof model.attributes[index] == 'object' || !model.attributes[index].match(value) || model.attributes.hidden)) })

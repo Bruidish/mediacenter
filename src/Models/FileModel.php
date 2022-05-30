@@ -66,11 +66,12 @@ class FileModel extends ObjectModel
                     if (!is_dir(__DIR__ . "/../../images/{$output->hash}")) {
                         mkdir(__DIR__ . "/../../images/{$output->hash}");
                     }
+                    @unlink(__DIR__ . "/../../images/{$output->hash}/image.jpg");
                     if (file_put_contents(__DIR__ . "/../../images/{$output->hash}/image.jpg", $data)) {
                         $output->image = "images/{$output->hash}/image.jpg";
                         (new DbController)->update($this->table, ['image' => $output->image], "{$this->primary}=\"{$this->id}\"");
                     }
-                } catch (\Exception $e) {}
+                } catch (\Exception$e) {}
             }
         }
 
